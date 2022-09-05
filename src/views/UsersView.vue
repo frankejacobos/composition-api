@@ -4,13 +4,19 @@
   <template v-if="users.length > 0">
     <h2>Users</h2>
     <div>
-      <ul>
+      <user-list :users="users" v-slot="{ user }">
+        {{ user.first_name }} {{ user.last_name }}
+        <br />
+        {{ user.email }}
+        <br>
+      </user-list>
+      <!-- <ul>
         <li v-for="{ first_name, last_name, email, id } in users" :key="id">
           {{ first_name }} {{ last_name }}
           <br />
           {{ email }}
         </li>
-      </ul>
+      </ul> -->
     </div>
     <span>Page {{ page }} of {{ totalPages }}</span>
     <br />
@@ -21,9 +27,11 @@
 
 <script>
 import useUsers from "@/composables/useUsers";
+import UserList from "@/components/UserList.vue";
 
 export default {
   name: "UsersView",
+  components: { UserList },
   setup() {
     const { error, isLoading, nextPage, page, prevPage, totalPages, users } =
       useUsers();
